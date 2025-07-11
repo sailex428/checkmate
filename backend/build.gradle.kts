@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "me.sailex"
-version = "0.0.1-SNAPSHOT"
+version = project.version
 
 java {
     toolchain {
@@ -38,6 +38,11 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+tasks.named<ProcessResources>("processResources") {
+    expand(project.properties)
+}
+
 
 tasks.jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
