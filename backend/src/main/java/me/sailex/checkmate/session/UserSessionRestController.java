@@ -23,11 +23,12 @@ public class UserSessionRestController {
     }
 
     @GetMapping(APIPaths.SESSION)
-    public ResponseEntity<LoginResponse> checkSession(@CookieValue(TOKEN_NAME) String token) {
+    public ResponseEntity<LoginResponse> checkSession(@CookieValue(TOKEN_NAME) String token, HttpServletResponse response) {
         PlayerSession playerSession = sessionManager.getSessionByToken(token);
         if (playerSession == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+        response.addHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
         LoginResponse loginResponse = new LoginResponse(playerSession.username());
         return ResponseEntity.ok(loginResponse);
     }
