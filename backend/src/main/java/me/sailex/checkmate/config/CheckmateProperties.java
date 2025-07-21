@@ -10,5 +10,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class CheckmateProperties {
 
     private String version;
+    private int sessionExpiration;
 
 }
