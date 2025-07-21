@@ -7,7 +7,7 @@ import { useAuth } from "../../api/auth.ts";
 const BACKEND_URL: string = import.meta.env.VITE_BACKEND_URL;
 
 const PlayerLoginForm = () => {
-  const { username } = useAuth();
+  const { username, loading } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
@@ -21,7 +21,7 @@ const PlayerLoginForm = () => {
     });
     if (response.ok) {
       const json = await response.json();
-      setUsername((json as SessionType).username);
+      //setUsername((json as SessionType).username);
       navigateToGame();
     } else {
       const text = await response.text();
@@ -33,13 +33,13 @@ const PlayerLoginForm = () => {
     navigate("/game");
   };
 
-  if (isLoading) {
+  if (loading) {
     return <></>;
   }
 
   return (
     <div className={"flex justify-center gap-5"}>
-      {!loggedIn ? (
+      {!username ? (
         <div>
           <input
             id={"username-input"}
@@ -51,7 +51,7 @@ const PlayerLoginForm = () => {
             type={"text"}
             onChange={(e) => {
               setError(null);
-              setUsername(e.target.value);
+              // setUsername(e.target.value);
             }}
             placeholder={"username"}
             value={username}
