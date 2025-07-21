@@ -8,10 +8,10 @@ import {
   type MatchUpdateType,
   type MoveUpdateType,
 } from "../api/requestType.ts";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Board } from "../components/game/board.tsx";
 import type { Client } from "@stomp/stompjs";
-import { useAuth } from "../api/auth.ts";
+import UserContext from "../context/userContext.tsx";
 
 type Game = {
   gameState: GameState;
@@ -19,7 +19,7 @@ type Game = {
 };
 
 const Game = () => {
-  const { username, isLoading } = useAuth();
+  const { isLoading } = useContext(UserContext);
   const stompClient = useRef<Client | null>(null);
   const [game, setGame] = useState<Game>({
     gameState: GameState.DEFAULT,

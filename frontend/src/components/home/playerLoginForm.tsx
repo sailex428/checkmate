@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import type { SessionType } from "../../types/session.ts";
 import { useNavigate } from "react-router-dom";
 import { API_PATH } from "../../api/paths.ts";
-import { useAuth } from "../../api/auth.ts";
+import UserContext from "../../context/userContext.tsx";
 
 const BACKEND_URL: string = import.meta.env.VITE_BACKEND_URL;
 
 const PlayerLoginForm = () => {
-  const { username, loading } = useAuth();
+  const { username, setUsername, isLoading } = useContext(UserContext);
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
@@ -21,7 +21,7 @@ const PlayerLoginForm = () => {
     });
     if (response.ok) {
       const json = await response.json();
-      //setUsername((json as SessionType).username);
+      setUsername((json as SessionType).username);
       navigateToGame();
     } else {
       const text = await response.text();
@@ -33,7 +33,7 @@ const PlayerLoginForm = () => {
     navigate("/game");
   };
 
-  if (loading) {
+  if (isLoading) {
     return <></>;
   }
 
@@ -51,7 +51,7 @@ const PlayerLoginForm = () => {
             type={"text"}
             onChange={(e) => {
               setError(null);
-              // setUsername(e.target.value);
+              setUsername(e.target.value);
             }}
             placeholder={"username"}
             value={username}
