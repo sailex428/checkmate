@@ -23,6 +23,9 @@ public class MatchMakingService {
 
     public void addToMatchMaking(String playerName) {
         PlayerSession player1 = sessionManager.getSession(playerName);
+        if (requests.contains(player1)) {
+            return;
+        }
         if (requests.isEmpty()) {
             requests.offer(player1);
         } else {
