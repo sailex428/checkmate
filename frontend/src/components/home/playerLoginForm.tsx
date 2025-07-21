@@ -7,11 +7,15 @@ import UserContext from "../../context/userContext.tsx";
 const BACKEND_URL: string = import.meta.env.VITE_BACKEND_URL;
 
 const PlayerLoginForm = () => {
-  const { username, setUsername, isLoading } = useContext(UserContext);
+  const { username, setUsername, isLoading, loggedIn } =
+    useContext(UserContext);
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
   const onPlay = async () => {
+    if (loggedIn) {
+      navigateToGame();
+    }
     const url = new URL(BACKEND_URL + API_PATH.LOGIN);
     url.searchParams.set("username", username);
 
@@ -39,7 +43,7 @@ const PlayerLoginForm = () => {
 
   return (
     <div className={"flex justify-center gap-5"}>
-      {!username ? (
+      {!loggedIn ? (
         <div>
           <input
             id={"username-input"}

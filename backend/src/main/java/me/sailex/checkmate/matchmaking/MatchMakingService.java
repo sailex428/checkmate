@@ -26,6 +26,9 @@ public class MatchMakingService {
         if (requests.contains(player1)) {
             return;
         }
+        if (player1 == null) {
+            return;
+        }
         if (requests.isEmpty()) {
             requests.offer(player1);
         } else {

@@ -6,11 +6,11 @@ export const API_PATH = {
   GAME_MOVE: `/app/game/{param}/move`,
 
   //client need to subscribe to
-  MATCH_UPDATE: "/match/update",
-  MATCH_ERRORS: "/match/errors",
-  MOVE_UPDATE: "/move/update",
-  GAME_STATE: "/game/state",
-  GAME_ERRORS: "/game/move/errors",
+  MATCH_UPDATE: "/user/queue/match/update",
+  MATCH_ERRORS: "/user/queue/match/errors",
+  MOVE_UPDATE: "/user/queue/move/update",
+  GAME_STATE: "/user/queue/game/state",
+  GAME_ERRORS: "/user/queue/game/move/errors",
 };
 
 export const formatApiPath = (

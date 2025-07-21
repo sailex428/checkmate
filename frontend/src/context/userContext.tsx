@@ -14,36 +14,40 @@ type UserContextType = {
   username: string;
   setUsername: (username: string) => void;
   isLoading: boolean;
+  loggedIn: boolean;
 };
 
 const UserContext = createContext<UserContextType>({
   username: "",
   setUsername: () => null,
   isLoading: true,
+  loggedIn: false,
 });
 
 export const UserContextProvider = (props: PropsWithChildren) => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     async function checkSession() {
       try {
-        console.log("");
         const res = await fetch(BACKEND_URL + API_PATH.SESSION, {
           method: "GET",
           credentials: "include",
         });
 
         if (res.ok) {
-          const data = await res.json();
-          const session = JSON.parse(data) as SessionType;
+          const session = (await res.json()) as SessionType;
           setUsername(session.username);
+          setLoggedIn(true);
         } else {
           setUsername("");
           navigate("/");
         }
+      } catch (error) {
+        console.error(error);
       } finally {
         setIsLoading(false);
       }
@@ -52,7 +56,9 @@ export const UserContextProvider = (props: PropsWithChildren) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ username, setUsername, isLoading }}>
+    <UserContext.Provider
+      value={{ username, setUsername, isLoading, loggedIn }}
+    >
       {props.children}
     </UserContext.Provider>
   );
