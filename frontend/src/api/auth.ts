@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { API_PATH } from "./paths.ts";
 import { useNavigate } from "react-router-dom";
-import type { Session } from "../types/session.ts";
+import type { SessionType } from "../types/session.ts";
 
 const BACKEND_URL: string = import.meta.env.VITE_BACKEND_URL;
 
@@ -19,7 +19,7 @@ export const useAuth = () => {
 
         if (res.ok) {
           const data = await res.json();
-          const session = JSON.parse(data) as Session;
+          const session = JSON.parse(data) as SessionType;
           setUsername(session.username);
         } else {
           navigate("/");
