@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Session } from "../../types/session.ts";
+import type { SessionType } from "../../types/session.ts";
 import { useNavigate } from "react-router-dom";
 import { API_PATH } from "../../api/paths.ts";
 import { useAuth } from "../../api/auth.ts";
@@ -21,7 +21,7 @@ const PlayerLoginForm = () => {
     });
     if (response.ok) {
       const json = await response.json();
-      setUsername((json as Session).username);
+      setUsername((json as SessionType).username);
       navigateToGame();
     } else {
       const text = await response.text();
