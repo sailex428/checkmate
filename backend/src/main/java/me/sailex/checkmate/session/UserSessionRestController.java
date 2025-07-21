@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000/")
-@RequestMapping(value = "/api")
 public class UserSessionRestController {
 
     public static final String TOKEN_NAME = "CHECKMATE-SESSION";
@@ -25,7 +24,7 @@ public class UserSessionRestController {
 
     @GetMapping(APIPaths.SESSION)
     public ResponseEntity<LoginResponse> checkSession(@CookieValue(TOKEN_NAME) String token) {
-        PlayerSession playerSession = sessionManager.getSession(token);
+        PlayerSession playerSession = sessionManager.getSessionByToken(token);
         if (playerSession == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
