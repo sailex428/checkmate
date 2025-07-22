@@ -18,7 +18,7 @@ export type ErrorMessageType = {
 
 export type GameStateType = {
   gameId: string;
-  gameState: GameState;
+  state: GameState;
   fen: string;
   whitePlayer: string;
   blackPlayer: string;
@@ -26,7 +26,6 @@ export type GameStateType = {
 
 export const GameState = {
   DEFAULT: "DEFAULT",
-  MATCHING: "MATCHING",
   START: "START",
   ONGOING: "ONGOING",
   WHITE_WON: "WHITE_WON",

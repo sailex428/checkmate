@@ -19,7 +19,7 @@ type UserContextType = {
 
 const UserContext = createContext<UserContextType>({
   username: "",
-  setUsername: () => null,
+  setUsername: () => {},
   isLoading: true,
   loggedIn: false,
 });

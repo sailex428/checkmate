@@ -4,6 +4,7 @@ export const API_PATH = {
   SESSION: "/api/session",
   MATCH_REQUEST: "/app/match/request",
   GAME_MOVE: `/app/game/{param}/move`,
+  GAME_UPDATE: `/app/game/{param}/update`,
 
   //client need to subscribe to
   MATCH_UPDATE: "/user/queue/match/update",

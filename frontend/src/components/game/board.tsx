@@ -1,54 +1,40 @@
-export const Board = () => {
+import { type Chess, Move } from "chess.js";
+import { getPieceToGridPosition, type MoveType } from "../../api/chess.ts";
+import { Piece } from "./piece.tsx";
+import { useDroppable } from "@dnd-kit/core";
+import type { GameState } from "../../api/requestType.ts";
+import { GameEndDialog } from "./gameEndDialog.tsx";
+
+type BoardProps = {
+  state: GameState;
+  game: Chess;
+  makeMove: (move: MoveType) => boolean;
+};
+
+export const Board = ({ game, state, makeMove }: BoardProps) => {
+  // const { isOver, setNodeRef } = useDroppable({
+  //   id: "droppable",
+  // });
+  const onDrop = (sourceSquare: string, targetSquare: string) => {
+    return makeMove({
+      from: sourceSquare,
+      to: targetSquare,
+      promotion: "q", // always promote to queen for simplicity
+    });
+  };
+
+  const pieceToPostion = getPieceToGridPosition(game.board());
+
   return (
-    <svg viewBox="0 0 100 100" className="coordinates" aria-hidden="true">
-      <text x="0.75" y="3.5" fontSize="2.8" className="coordinate-light">
-        8
-      </text>
-      <text x="0.75" y="15.75" fontSize="2.8" className="coordinate-dark">
-        7
-      </text>
-      <text x="0.75" y="28.25" fontSize="2.8" className="coordinate-light">
-        6
-      </text>
-      <text x="0.75" y="40.75" fontSize="2.8" className="coordinate-dark">
-        5
-      </text>
-      <text x="0.75" y="53.25" fontSize="2.8" className="coordinate-light">
-        4
-      </text>
-      <text x="0.75" y="65.75" fontSize="2.8" className="coordinate-dark">
-        3
-      </text>
-      <text x="0.75" y="78.25" fontSize="2.8" className="coordinate-light">
-        2
-      </text>
-      <text x="0.75" y="90.75" fontSize="2.8" className="coordinate-dark">
-        1
-      </text>
-      <text x="10" y="99" fontSize="2.8" className="coordinate-dark">
-        a
-      </text>
-      <text x="22.5" y="99" fontSize="2.8" className="coordinate-light">
-        b
-      </text>
-      <text x="35" y="99" fontSize="2.8" className="coordinate-dark">
-        c
-      </text>
-      <text x="47.5" y="99" fontSize="2.8" className="coordinate-light">
-        d
-      </text>
-      <text x="60" y="99" fontSize="2.8" className="coordinate-dark">
-        e
-      </text>
-      <text x="72.5" y="99" fontSize="2.8" className="coordinate-light">
-        f
-      </text>
-      <text x="85" y="99" fontSize="2.8" className="coordinate-dark">
-        g
-      </text>
-      <text x="97.5" y="99" fontSize="2.8" className="coordinate-light">
-        h
-      </text>
-    </svg>
+    <div
+      className={
+        "grid grid-cols-8 grid-rows-8 bg-[url(/board.png)] bg-cover rounded-3xl mx-3"
+      }
+    >
+      <GameEndDialog state={state} />
+      {pieceToPostion.map((piece, index) => (
+        <Piece piece={piece} key={index} />
+      ))}
+    </div>
   );
 };
