@@ -5,8 +5,8 @@ import me.sailex.checkmate.session.PlayerSession;
 import me.sailex.checkmate.session.SessionManager;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 @Service
 public class MatchMakingService {
@@ -18,15 +18,12 @@ public class MatchMakingService {
     public MatchMakingService(SessionManager sessionManager, GameService gameService) {
         this.gameService = gameService;
         this.sessionManager = sessionManager;
-        this.requests = new LinkedList<>();
+        this.requests = new LinkedBlockingQueue<>();
     }
 
     public void addToMatchMaking(String playerName) {
         PlayerSession player1 = sessionManager.getSession(playerName);
-        if (requests.contains(player1)) {
-            return;
-        }
-        if (player1 == null) {
+        if (requests.contains(player1) || player1 == null) {
             return;
         }
         if (requests.isEmpty()) {
