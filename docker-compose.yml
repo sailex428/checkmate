@@ -1,0 +1,14 @@
+name: checkmate-app
+
+services:
+  checkmate-backend:
+    container_name: backend
+    build: ./backend
+    ports:
+      - "8080:8080"
+
+  checkmate-frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - "80:80"
