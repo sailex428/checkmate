@@ -4,6 +4,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import me.sailex.checkmate.session.PlayerSession;
 import me.sailex.checkmate.session.SessionManager;
+import me.sailex.checkmate.session.exception.InvalidSessionException;
 import org.apache.catalina.realm.GenericPrincipal;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -25,9 +26,14 @@ public class CheckmateHandshakeHandler extends DefaultHandshakeHandler {
 
     @Override
     protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler, Map<String, Object> attributes) {
-        String token = getTokenFromCookie(request);
-        PlayerSession session = playerSessionManager.getSessionByToken(token);
-        return new GenericPrincipal(session.username());
+        try {
+            String token = getTokenFromCookie(request);
+            PlayerSession session = playerSessionManager.getSessionByToken(token);
+            return new GenericPrincipal(session.username());
+        } catch (InvalidSessionException e) {
+            logger.error(e.getMessage());
+            return new GenericPrincipal("invalid");
+        }
     }
 
     private String getTokenFromCookie(ServerHttpRequest request) {

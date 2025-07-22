@@ -32,8 +32,8 @@ public class AppConfig {
     }
 
     @Bean
-    MatchMakingController matchMakingController(MatchMakingService matchMakingService) {
-        return new MatchMakingController(matchMakingService);
+    MatchMakingController matchMakingController(MatchMakingService matchMakingService, SimpMessagingTemplate template) {
+        return new MatchMakingController(matchMakingService, template);
     }
 
     @Bean
