@@ -1,4 +1,4 @@
-import Navbar from "./components/home/navbar.tsx";
+import Navbar from "./components/navbar.tsx";
 import { Outlet } from "react-router-dom";
 
 export default function Layout() {
