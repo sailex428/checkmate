@@ -47,7 +47,7 @@ const PlayerLoginForm = () => {
         <div>
           <input
             id={"username-input"}
-            className={`rounded-2xl px-5 py-3 w-70 ${
+            className={`rounded-2xl px-5 py-3 w-60 ${
               error
                 ? "border-2 border-rose-500"
                 : "border border-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
@@ -70,7 +70,7 @@ const PlayerLoginForm = () => {
       <div>
         <button
           className={
-            "rounded-2xl px-10 py-3 bg-sky-500 hover:bg-sky-400 transition-colors duration-200"
+            "rounded-2xl px-10 py-3 bg-sky-500 hover:bg-sky-400 transition-colors duration-200 hover:cursor-pointer"
           }
           type={"button"}
           onClick={onPlay}
