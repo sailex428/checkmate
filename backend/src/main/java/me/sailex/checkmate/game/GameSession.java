@@ -3,27 +3,27 @@ package me.sailex.checkmate.game;
 import com.github.bhlangonijr.chesslib.Board;
 import com.github.bhlangonijr.chesslib.Side;
 import com.github.bhlangonijr.chesslib.move.Move;
-import lombok.Getter;
 import me.sailex.checkmate.move.InvalidMoveException;
 import me.sailex.checkmate.session.PlayerSession;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameSession {
 
     private static final boolean FULL_VALIDATION = true;
 
-    @Getter
-    private final PlayerSession whitePlayer;
-    @Getter
-    private final PlayerSession blackPlayer;
+    private final Map<Color, PlayerSession> colorToPlayer;
     private final Board board;
 
     public GameSession(PlayerSession player1, PlayerSession player2) {
+        this.colorToPlayer = new HashMap<>(); //TODO: use a enum map here
         if (Math.random() > 0.5) {
-            this.whitePlayer =  player1;
-            this.blackPlayer = player2;
+            this.colorToPlayer.put(Color.W, player1);
+            this.colorToPlayer.put(Color.B, player2);
         } else {
-            this.whitePlayer = player2;
-            this.blackPlayer = player1;
+            this.colorToPlayer.put(Color.W, player1);
+            this.colorToPlayer.put(Color.B, player2);
         }
         this.board = new Board();
     }
@@ -52,6 +52,30 @@ public class GameSession {
 
     public String getFen() {
         return this.board.getFen();
+    }
+
+    public PlayerSession getWhitePlayer() {
+        return colorToPlayer.get(Color.W);
+    }
+
+    public PlayerSession getBlackPlayer() {
+        return colorToPlayer.get(Color.B);
+    }
+
+    public Color getColorOfPlayer(PlayerSession player) {
+        return colorToPlayer.entrySet().stream()
+                .filter(e -> e.getValue() == player)
+                .findFirst()
+                .orElseThrow()
+                .getKey();
+    }
+
+    public Color getColorOfPlayerName(String playerName) {
+        return colorToPlayer.entrySet().stream()
+                .filter(e -> e.getValue().username().equals(playerName))
+                .findFirst()
+                .orElseThrow()
+                .getKey();
     }
 
 }

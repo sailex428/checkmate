@@ -6,6 +6,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
+import java.security.Principal;
+
 @Controller
 public class GameStateController {
 
@@ -17,12 +19,13 @@ public class GameStateController {
 
     @MessageMapping(APIPaths.GAME_UPDATE)
     @SendToUser(APIPaths.GAME_STATE)
-    public GameStateRequest getGameStateUpdate(@DestinationVariable String gameId) {
+    public GameStateRequest getGameStateUpdate(@DestinationVariable String gameId, Principal principal) {
         GameSession session = gameService.getActiveGame(gameId);
         if (session != null) {
+            Color color = session.getColorOfPlayerName(principal.getName());
             return new GameStateRequest(gameId, session.getGameState(), session.getFen(),
                     session.getWhitePlayer().username(),
-                    session.getBlackPlayer().username());
+                    session.getBlackPlayer().username(), color);
         }
         return new GameStateRequest();
     }

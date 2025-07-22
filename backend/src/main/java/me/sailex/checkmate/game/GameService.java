@@ -26,10 +26,11 @@ public class GameService {
         String blackPlayerName = gameSession.getBlackPlayer().username();
         String gameId = generateGameId(whitePlayerName, blackPlayerName);
 
-        GameStateRequest stateRequest = new GameStateRequest(gameId, GameState.START, gameSession.getFen(), whitePlayerName, blackPlayerName);
+        template.convertAndSendToUser(whitePlayerName, GAME_STATE,
+                GameStateRequest.buildWithWhite(gameId, GameState.START, gameSession.getFen(), whitePlayerName, blackPlayerName));
 
-        template.convertAndSendToUser(whitePlayerName, GAME_STATE, stateRequest);
-        template.convertAndSendToUser(blackPlayerName, GAME_STATE, stateRequest);
+        template.convertAndSendToUser(blackPlayerName, GAME_STATE, GameStateRequest.buildWithBlack(gameId, GameState.START,
+                gameSession.getFen(), whitePlayerName, blackPlayerName));
 
         activeGames.put(gameId, gameSession);
     }
@@ -38,9 +39,11 @@ public class GameService {
         String whitePlayerName = session.getWhitePlayer().username();
         String blackPlayerName = session.getBlackPlayer().username();
 
-        GameStateRequest stateRequest = new GameStateRequest(gameId, state, session.getFen(), whitePlayerName, blackPlayerName);
-        template.convertAndSendToUser(whitePlayerName, GAME_STATE, stateRequest);
-        template.convertAndSendToUser(blackPlayerName, GAME_STATE, stateRequest);
+        template.convertAndSendToUser(whitePlayerName, GAME_STATE,
+                GameStateRequest.buildWithWhite(gameId, state, session.getFen(), whitePlayerName, blackPlayerName));
+
+        template.convertAndSendToUser(blackPlayerName, GAME_STATE,
+                GameStateRequest.buildWithBlack(gameId, state, session.getFen(), whitePlayerName, blackPlayerName));
 
         activeGames.remove(gameId);
     }
