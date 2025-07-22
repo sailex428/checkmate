@@ -8,6 +8,7 @@ import { API_PATH } from "../api/paths.ts";
 import Spinner from "../components/game/spinner.tsx";
 import {
   type ErrorMessageType,
+  type GameMoveType,
   GameState,
   type GameStateType,
   type MatchUpdateType,
@@ -18,26 +19,21 @@ import { Board } from "../components/game/board.tsx";
 import type { Client } from "@stomp/stompjs";
 import UserContext from "../context/userContext.tsx";
 import ErrorBanner from "../components/errorBanner.tsx";
-import { Chess } from "chess.js";
+import { Chess, type Color } from "chess.js";
 import type { MoveType } from "../api/chess.ts";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import PlayerInfo from "../components/game/playerInfo.tsx";
+import GameContext from "../context/gameContext.tsx";
+import { GameEndDialog } from "../components/game/gameEndDialog.tsx";
 
 type MatchingType = {
   isMatching: boolean;
   detail: string;
 };
 
-type GameType = {
-  chess: Chess;
-  state: GameState;
-};
-
 const Game = () => {
-  const [game, setGame] = useState<GameType>({
-    chess: new Chess(),
-    state: GameState.DEFAULT,
-  });
-  const { isLoading } = useContext(UserContext);
+  const { game, setGame } = useContext(GameContext);
+  const { username, isLoading } = useContext(UserContext);
   const stompClient = useRef<Client | null>(null);
   const [matching, setMatching] = useState<MatchingType>({
     isMatching: true,
@@ -68,7 +64,7 @@ const Game = () => {
         client,
         apiPath: API_PATH.MOVE_UPDATE,
         callback: (request) => {
-          updateFen(request.fen);
+          handleMoveUpdate(request);
         },
       });
       subscribe<GameStateType>({
@@ -118,13 +114,25 @@ const Game = () => {
         return prev;
       });
     }
-    updateFen(request.fen);
+    const newChess = new Chess(request.fen);
+    setGame({
+      chess: newChess,
+      state: request.state,
+      whitePlayer: request.whitePlayer,
+      blackPlayer: request.blackPlayer,
+      playersColor: request.playersColor.toLowerCase() as Color,
+    });
   };
 
   const makeMove = (move: MoveType) => {
-    const gameCopy = game;
-    const result = gameCopy.chess.move(move);
-    setGame(gameCopy);
+    const newChess = new Chess(game.chess.fen());
+    const result = newChess.move(move);
+    setGame((prevGame) => {
+      return {
+        ...prevGame,
+        chess: newChess,
+      };
+    });
 
     const valid = result !== null;
     if (valid) {
@@ -132,24 +140,29 @@ const Game = () => {
       const gameId = getGameIdFromSearchParams();
 
       if (client && gameId) {
-        publishMessage({
+        publishMessage<GameMoveType>({
           client,
           apiPath: API_PATH.GAME_MOVE,
           placeHolder: gameId,
+          body: { move: result.lan },
         });
       }
     }
     return valid;
   };
 
-  const updateFen = (fen: string) => {
-    const newGame = game;
-    newGame.chess.load(fen);
-    setGame(newGame);
+  const handleMoveUpdate = (request: MoveUpdateType) => {
+    const newChess = new Chess(request.fen);
+    setGame((prevGame) => {
+      return {
+        ...prevGame,
+        chess: newChess,
+      };
+    });
   };
 
   const getGameIdFromSearchParams = () => {
-    return searchParams.get("gameId");
+    return searchParams.get(GAME_ID);
   };
 
   if (isLoading) {
@@ -163,12 +176,25 @@ const Game = () => {
   return (
     <div className={"flex flex-col h-3/4 justify-center items-center gap-7"}>
       {matching.isMatching ? (
-        <div>
+        <div className={"flex flex-col items-center gap-7"}>
           <Spinner />
-          <div>{matching.detail}</div>
+          <div className={"font-semibold"}>{matching.detail}</div>
         </div>
       ) : (
-        <Board state={game.state} game={game.chess} makeMove={makeMove} />
+        <>
+          <PlayerInfo
+            playerName={
+              username == game.whitePlayer ? game.blackPlayer : game.whitePlayer
+            }
+          />
+          <GameEndDialog state={game.state} />
+          <Board
+            game={game.chess}
+            makeMove={makeMove}
+            playersColor={game.playersColor}
+          />
+          <PlayerInfo playerName={username} />
+        </>
       )}
     </div>
   );

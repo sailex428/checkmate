@@ -47,7 +47,7 @@ const PlayerLoginForm = () => {
         <div>
           <input
             id={"username-input"}
-            className={`rounded-2xl px-5 py-3 w-60 ${
+            className={`rounded-2xl px-5 py-3 md:w-75 w-50 ${
               error
                 ? "border-2 border-rose-500"
                 : "border border-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-500"

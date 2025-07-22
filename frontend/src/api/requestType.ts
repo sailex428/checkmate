@@ -1,3 +1,5 @@
+import type { Color } from "chess.js";
+
 export type GameMoveType = {
   move: string;
 };
@@ -22,6 +24,7 @@ export type GameStateType = {
   fen: string;
   whitePlayer: string;
   blackPlayer: string;
+  playersColor: Color;
 };
 
 export const GameState = {

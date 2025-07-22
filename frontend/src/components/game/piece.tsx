@@ -6,15 +6,8 @@ type PieceProps = {
 
 export const Piece = ({ piece }: PieceProps) => {
   const name = piece.name;
-  const grid = piece.grid;
   return (
-    <div
-      id={piece.name}
-      style={{
-        gridColumnStart: grid.col,
-        gridRowStart: grid.row,
-      }}
-    >
+    <div id={piece.name}>
       <img src={`/piece/${name}.png`} alt={name} />
     </div>
   );

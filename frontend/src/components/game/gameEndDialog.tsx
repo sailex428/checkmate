@@ -1,4 +1,4 @@
-import type { GameState } from "../../api/requestType.ts";
+import { GameState } from "../../api/requestType.ts";
 import { getGameEndMessage } from "../../api/chess.ts";
 
 type GameEndDialogProps = {
@@ -13,13 +13,16 @@ export const GameEndDialog = ({ state }: GameEndDialogProps) => {
   }
 
   return (
-    <div>
-      <dialog
-        open
-        className={"px-15 py-10 rounded-3xl m-auto text-2xl bg-black font-sans"}
-      >
-        {dialogMessage}
-      </dialog>
-    </div>
+    <dialog
+      open
+      className={"px-15 py-10 rounded-3xl m-auto bg-black font-sans z-1"}
+    >
+      <span className="relative mx-2 inline-block">
+        <span className="bg-sky-900 absolute inset-0 origin-center translate-y-[1px] -rotate-[3deg] scale-110 transform rounded-md"></span>
+        <span className="relative px-2 text-2xl text-white">
+          {dialogMessage}
+        </span>
+      </span>
+    </dialog>
   );
 };
