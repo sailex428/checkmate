@@ -9,6 +9,7 @@ public class APIPaths {
     public static final String LOGIN = "/api/login";
     public static final String MATCH_REQUEST = "/match/request";
     public static final String GAME_MOVE = "/game/{gameId}/move";
+    public static final String GAME_UPDATE = "/game/{gameId}/update";
 
     //paths where the server sends messages to
     public static final String MATCH_UPDATE =  "/queue/match/update";
