@@ -3,10 +3,8 @@ import {
   getPieceToGridPosition,
   getSquareToGrid,
   type MoveType,
-  type PieceType,
 } from "../../api/chess.ts";
 import { DndContext, type DragEndEvent } from "@dnd-kit/core";
-import { useEffect, useMemo, useState } from "react";
 import DroppableSquare from "./droppableSquare.tsx";
 import DraggablePiece from "./draggablePiece.tsx";
 
@@ -17,15 +15,7 @@ type BoardProps = {
 };
 
 export const Board = ({ game, makeMove, playersColor }: BoardProps) => {
-  const pieces = useMemo(
-    () => getPieceToGridPosition(playersColor, game.board()),
-    [game],
-  );
-  const [displayPieces, setDisplayPieces] = useState<PieceType[]>(pieces);
-
-  useEffect(() => {
-    setDisplayPieces(pieces);
-  }, [pieces]);
+  const pieces = getPieceToGridPosition(playersColor, game.board());
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -34,15 +24,11 @@ export const Board = ({ game, makeMove, playersColor }: BoardProps) => {
     const from = active.id.toString();
     const to = over.id.toString();
 
-    const success = makeMove({
+    makeMove({
       from,
       to,
       promotion: "q", //promote to queen to keep it simple
     });
-
-    if (!success) {
-      setDisplayPieces(pieces);
-    }
   };
 
   return (
@@ -53,7 +39,7 @@ export const Board = ({ game, makeMove, playersColor }: BoardProps) => {
         {Object.entries(getSquareToGrid(playersColor)).map(([square]) => (
           <DroppableSquare key={square} id={square} />
         ))}
-        {displayPieces.map((piece, index) => (
+        {pieces.map((piece, index) => (
           <DraggablePiece
             key={index}
             piece={piece}

@@ -174,7 +174,7 @@ const Game = () => {
   }
 
   return (
-    <div className={"flex flex-col h-3/4 justify-center items-center gap-7"}>
+    <div className={"flex flex-col h-5/6 justify-center items-center gap-7"}>
       {matching.isMatching ? (
         <div className={"flex flex-col items-center gap-7"}>
           <Spinner />
