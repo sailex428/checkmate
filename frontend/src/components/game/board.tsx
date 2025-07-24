@@ -34,7 +34,8 @@ export const Board = ({ game, makeMove, playersColor }: BoardProps) => {
   return (
     <DndContext onDragEnd={handleDragEnd}>
       <div
-        className={`grid grid-cols-8 grid-rows-8 bg-[url(/board.png)] bg-cover rounded-3xl relative w-full max-w-lg aspect-square`}
+        className={`grid grid-cols-8 grid-rows-8 bg-[url(/board.png)] bg-cover 
+        rounded-3xl relative w-full max-w-lg aspect-square`}
       >
         {Object.entries(getSquareToGrid(playersColor)).map(([square]) => (
           <DroppableSquare key={square} id={square} />
