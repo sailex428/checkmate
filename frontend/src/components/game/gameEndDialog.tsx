@@ -15,7 +15,9 @@ export const GameEndDialog = ({ state }: GameEndDialogProps) => {
   return (
     <dialog
       open
-      className={"px-15 py-10 rounded-3xl m-auto bg-black font-sans z-1"}
+      className={
+        "px-15 py-10 rounded-3xl m-auto bg-black opacity-90 font-sans z-1"
+      }
     >
       <span className="relative mx-2 inline-block">
         <span className="bg-sky-900 absolute inset-0 origin-center translate-y-[1px] -rotate-[3deg] scale-110 transform rounded-md"></span>
