@@ -19,7 +19,11 @@ public class MoveController {
     }
 
     @MessageMapping(APIPaths.GAME_MOVE)
-    public void move(@DestinationVariable String gameId, ClientMoveRequest request, Principal principal) {
+    public void move(
+        @DestinationVariable String gameId, 
+        ClientMoveRequest request, 
+        Principal principal
+    ) {
         moveService.doMove(gameId, request.move(), principal.getName());
     }
 
