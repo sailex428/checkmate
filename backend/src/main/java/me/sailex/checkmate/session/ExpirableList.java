@@ -21,9 +21,6 @@ public class ExpirableList<T> {
     }
 
     public void expire() {
-        if (entries.isEmpty()) {
-            return;
-        }
         List<Timestamp> toRemove = entries.keySet()
                 .stream()
                 .filter(timestamp -> System.currentTimeMillis() - timestamp.getTime() > expirationTime)
