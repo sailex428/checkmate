@@ -27,10 +27,6 @@ public class MatchMakingService {
 
     public boolean addToMatchMaking(String playerName) {
         PlayerSession player1 = sessionManager.getSession(playerName);
-        if (player1 == null) {
-            return false;
-        }
-
         if (requests.contains(player1)) {
             return true;
         }
