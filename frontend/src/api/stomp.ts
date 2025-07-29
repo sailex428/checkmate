@@ -1,14 +1,11 @@
 import { Client, type IPublishParams } from "@stomp/stompjs";
 import { formatApiPath } from "./paths.ts";
 
-const WEBSOCKET_BACKEND_URL: string = import.meta.env
-  .VITE_WEBSOCKET_BACKEND_URL;
-
 export const GAME_ID = "gameId";
 
 export const initStompClient = () => {
   return new Client({
-    brokerURL: WEBSOCKET_BACKEND_URL,
+    brokerURL: `ws://${location.host}/ws`,
     debug: function (str) {
       console.log(str);
     },

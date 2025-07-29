@@ -8,8 +8,6 @@ import { API_PATH } from "../api/paths.ts";
 import type { SessionType } from "../types/session.ts";
 import { useNavigate } from "react-router-dom";
 
-const BACKEND_URL: string = import.meta.env.VITE_BACKEND_URL;
-
 type UserContextType = {
   username: string;
   setUsername: (username: string) => void;
@@ -33,7 +31,7 @@ export const UserContextProvider = (props: PropsWithChildren) => {
   useEffect(() => {
     async function checkSession() {
       try {
-        const res = await fetch(BACKEND_URL + API_PATH.SESSION, {
+        const res = await fetch(API_PATH.SESSION, {
           method: "GET",
           credentials: "include",
         });

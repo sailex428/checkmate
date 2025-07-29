@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { API_PATH } from "../../api/paths.ts";
 import UserContext from "../../context/userContext.tsx";
 
-const BACKEND_URL: string = import.meta.env.VITE_BACKEND_URL;
-
 const PlayerLoginForm = () => {
   const { username, setUsername, isLoading, loggedIn } =
     useContext(UserContext);
@@ -16,7 +14,7 @@ const PlayerLoginForm = () => {
     if (loggedIn) {
       navigateToGame();
     }
-    const url = new URL(BACKEND_URL + API_PATH.LOGIN);
+    const url = new URL(window.location.origin + API_PATH.LOGIN);
     url.searchParams.set("username", username);
 
     const response = await fetch(url, {
