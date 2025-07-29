@@ -1,0 +1,108 @@
+name: Build And Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  build-backend:
+    name: Build Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'oracle'
+          java-version: '21'
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+        working-directory: backend
+
+      - name: Build Backend
+        run: gradle build
+        working-directory: backend
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-artifacts
+          path: ./backend/build
+
+  build-frontend:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      
+      - name: Install frontend dependencies
+        run: npm i
+        working-directory: frontend
+      
+      - name: Build frontend
+        run: npm run build
+        working-directory: frontend
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-artifacts
+          path: ./frontend/dist
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: [ build-frontend, build-backend ]
+    if: ${{ github.event_name == 'push' }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download backend artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-artifacts
+          path: ./backend/build
+
+      - name: Download frontend artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-artifacts
+          path: ./frontend/dist
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Frontend Docker Image
+        run: docker build -t eliashahn12/checkmate-frontend:latest ./frontend
+
+      - name: Build Backend Docker Image
+        run: docker build -t eliashahn12/checkmate-backend:latest ./backend
+
+      - name: Push Frontend Docker Image
+        run: docker push eliashahn12/checkmate-frontend:latest
+
+      - name: Push Backend Docker Image
+        run: docker push eliashahn12/checkmate-backend:latest
