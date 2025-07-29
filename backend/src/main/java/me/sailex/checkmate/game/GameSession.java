@@ -22,8 +22,8 @@ public class GameSession {
             this.colorToPlayer.put(Color.W, player1);
             this.colorToPlayer.put(Color.B, player2);
         } else {
-            this.colorToPlayer.put(Color.W, player1);
-            this.colorToPlayer.put(Color.B, player2);
+            this.colorToPlayer.put(Color.W, player2);
+            this.colorToPlayer.put(Color.B, player1);
         }
         this.board = new Board();
     }

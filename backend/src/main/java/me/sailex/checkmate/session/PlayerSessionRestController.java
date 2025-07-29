@@ -9,13 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class UserSessionRestController {
+public class PlayerSessionRestController {
 
     public static final String TOKEN_NAME = "CHECKMATE-SESSION";
     private final SessionManager sessionManager;
     private final CheckmateProperties properties;
 
-    public UserSessionRestController(SessionManager sessionManager, CheckmateProperties properties) {
+    public PlayerSessionRestController(SessionManager sessionManager, CheckmateProperties properties) {
         this.sessionManager = sessionManager;
         this.properties = properties;
     }

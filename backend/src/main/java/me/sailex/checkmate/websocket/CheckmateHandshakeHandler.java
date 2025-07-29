@@ -14,7 +14,7 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 import java.security.Principal;
 import java.util.Map;
 
-import static me.sailex.checkmate.session.UserSessionRestController.TOKEN_NAME;
+import static me.sailex.checkmate.session.PlayerSessionRestController.TOKEN_NAME;
 
 public class CheckmateHandshakeHandler extends DefaultHandshakeHandler {
 

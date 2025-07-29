@@ -19,8 +19,7 @@ public class GameWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/checkmate")
-                .setAllowedOrigins("*")
+        registry.addEndpoint("/ws")
                 .setHandshakeHandler(new CheckmateHandshakeHandler(sessionManager));
     }
 

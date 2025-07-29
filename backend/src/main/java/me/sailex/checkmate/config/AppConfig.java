@@ -8,7 +8,7 @@ import me.sailex.checkmate.move.MoveController;
 import me.sailex.checkmate.move.MoveService;
 import me.sailex.checkmate.session.SessionManager;
 import me.sailex.checkmate.session.PlayerSessionManager;
-import me.sailex.checkmate.session.UserSessionRestController;
+import me.sailex.checkmate.session.PlayerSessionRestController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -22,8 +22,9 @@ public class AppConfig {
     }
 
     @Bean
-    UserSessionRestController userSessionRestController(SessionManager userSessionManager, CheckmateProperties properties) {
-        return new UserSessionRestController(userSessionManager, properties);
+    PlayerSessionRestController playerSessionRestController(SessionManager userSessionManager,
+                                                       CheckmateProperties properties) {
+        return new PlayerSessionRestController(userSessionManager, properties);
     }
 
     @Bean

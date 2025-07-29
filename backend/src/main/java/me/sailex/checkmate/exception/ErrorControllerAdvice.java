@@ -1,5 +1,6 @@
 package me.sailex.checkmate.exception;
 
+import me.sailex.checkmate.session.exception.InvalidSessionException;
 import me.sailex.checkmate.session.exception.InvalidUsernameException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,14 @@ public class ErrorControllerAdvice {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ResponseBody
     public String userAlreadyExistsException(InvalidUsernameException e) {
+        logger.error(e.getMessage());
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(InvalidSessionException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public String invalidSessionException(InvalidSessionException e) {
         logger.error(e.getMessage());
         return e.getMessage();
     }
