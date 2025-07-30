@@ -26,7 +26,6 @@ export const publishMessage = <T>(props: PublishMessageProps<T>) => {
   if (props.body) {
     payload.body = JSON.stringify(props.body);
   }
-  console.log(payload);
   props.client.publish(payload);
 };
 
