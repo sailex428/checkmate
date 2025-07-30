@@ -3,12 +3,12 @@ name: checkmate
 services:
   backend:
     container_name: backend
-    image: checkmate-backend:latest
+    image: eliashahn12/checkmate-backend:latest
     ports:
       - "8080:8080"
 
   frontend:
     container_name: frontend
-    image: checkmate-frontend:latest
+    image: eliashahn12/checkmate-frontend:latest
     ports:
       - "80:80"
