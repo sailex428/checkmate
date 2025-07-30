@@ -6,9 +6,6 @@ export const GAME_ID = "gameId";
 export const initStompClient = () => {
   return new Client({
     brokerURL: `ws://${location.host}/ws`,
-    debug: function (str) {
-      console.log(str);
-    },
     reconnectDelay: 10000,
     heartbeatIncoming: 4000,
     heartbeatOutgoing: 4000,
