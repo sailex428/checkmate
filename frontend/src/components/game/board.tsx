@@ -4,7 +4,14 @@ import {
   getSquareToGrid,
   type MoveType,
 } from "../../api/chess.ts";
-import { DndContext, type DragEndEvent } from "@dnd-kit/core";
+import {
+  DndContext,
+  type DragEndEvent,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import DroppableSquare from "./droppableSquare.tsx";
 import DraggablePiece from "./draggablePiece.tsx";
 
@@ -15,6 +22,10 @@ type BoardProps = {
 };
 
 export const Board = ({ game, makeMove, playersColor }: BoardProps) => {
+  const mouseSensor = useSensor(MouseSensor);
+  const touchSensor = useSensor(TouchSensor);
+  const sensors = useSensors(mouseSensor, touchSensor);
+
   const pieces = getPieceToGridPosition(playersColor, game.board());
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -32,7 +43,7 @@ export const Board = ({ game, makeMove, playersColor }: BoardProps) => {
   };
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <div
         className={`grid grid-cols-8 grid-rows-8 bg-[url(/board.png)] bg-cover 
         rounded-3xl relative w-full max-w-lg aspect-square`}
