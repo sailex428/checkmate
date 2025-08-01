@@ -4,11 +4,15 @@ services:
   backend:
     container_name: backend
     image: eliashahn12/checkmate-backend:latest
-    ports:
-      - "8080:8080"
+    networks: 
+      - main
 
   frontend:
     container_name: frontend
     image: eliashahn12/checkmate-frontend:latest
-    ports:
-      - "80:80"
+    networks: 
+      - main
+
+networks:
+  main:
+    external: true
