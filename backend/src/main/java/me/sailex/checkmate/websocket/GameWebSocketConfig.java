@@ -20,6 +20,7 @@ public class GameWebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
+                .setAllowedOriginPatterns("*")
                 .setHandshakeHandler(new CheckmateHandshakeHandler(sessionManager));
     }
 
